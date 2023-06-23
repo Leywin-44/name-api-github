@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="create.css">
+    <title>fetch</title>
+    </head>
+    <body>
+        <div class="card">
+            <h1 id="Titre">Recherche d'utilisateur GitHub</h1>
+            <div class="search">
+                <input type="text" id="champ" placeholder="name of user">
+                <button id="btn"><img src="search.png" alt="search"></button>
+            </div>
+            <div id="output"></div>
+        </div>
+    <script>
+        document.getElementById('btn').addEventListener('click', function() {
+        var username = document.getElementById('champ').value;
+        searchUser(username);
+        }); 
+
+        function searchUser(username) {
+        fetch('https://api.github.com/users/' + username)
+            .then(function(response) {
+            return response.json();
+            })
+            .then(function(userData) {
+            var outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            var usernameHeading = document.createElement('h2');
+            usernameHeading.textContent = 'Nom d\'utilisateur : ' + userData.login;
+            outputDiv.appendChild(usernameHeading);
+
+            var avatarImg = document.createElement('img');
+            avatarImg.src = userData.avatar_url;
+            avatarImg.width = 100;
+            avatarImg.height = 100;
+            outputDiv.appendChild(avatarImg);
+            })
+            .catch(function(error) {
+            console.error(error);
+            });
+        }
+    </script>
+    </body>
+</html>
